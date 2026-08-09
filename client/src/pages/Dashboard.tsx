@@ -1,21 +1,24 @@
-import { useUser, useClerk } from '@clerk/clerk-react'
+import { useUser } from '@clerk/clerk-react'
 import { useSync } from '../hooks/useSync'
-import { BookOpen, BarChart3, BrainCircuit, Target, LogOut, ChevronRight, Flame } from 'lucide-react'
+import { BookOpen, BarChart3, BrainCircuit, Target, ChevronRight, Flame } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import AppShell from '../components/layout/AppShell'
+import { Button } from '../components/ui/Button'
+import { staggerContainer, fadeUp } from '../lib/motion'
 
 export default function Dashboard() {
   useSync()
 
   const { user } = useUser()
-  const { signOut } = useClerk()
 
   const firstName = user?.firstName || 'there'
 
   const stats = [
-    { label: 'Tests Taken', value: '0', icon: BookOpen, color: 'bg-blue-50 text-blue-700' },
-    { label: 'Questions Answered', value: '0', icon: Target, color: 'bg-purple-50 text-purple-700' },
-    { label: 'Current Streak', value: '0d', icon: Flame, color: 'bg-orange-50 text-orange-700' },
-    { label: 'Avg. Score', value: '—', icon: BarChart3, color: 'bg-green-50 text-green-700' },
+    { label: 'Tests Taken', value: '0', icon: BookOpen, tile: 'from-teal-100 to-cyan-50 text-teal-700' },
+    { label: 'Questions Answered', value: '0', icon: Target, tile: 'from-violet-100 to-indigo-50 text-violet-700' },
+    { label: 'Current Streak', value: '0d', icon: Flame, tile: 'from-amber-100 to-orange-50 text-amber-600' },
+    { label: 'Avg. Score', value: '—', icon: BarChart3, tile: 'from-emerald-100 to-green-50 text-emerald-700' },
   ]
 
   const quickActions = [
@@ -24,129 +27,120 @@ export default function Dashboard() {
       description: 'Full-length Bluebook-style exam with adaptive difficulty.',
       icon: BookOpen,
       href: '/practice/test',
-      accent: 'border-l-blue-600',
+      tile: 'from-teal-100 to-cyan-50 text-teal-700',
     },
     {
       title: 'Question Bank',
       description: 'Drill specific topics, skills, and difficulty levels.',
       icon: Target,
       href: '/practice/questions',
-      accent: 'border-l-purple-600',
+      tile: 'from-violet-100 to-indigo-50 text-violet-700',
     },
     {
       title: 'AI Tutor',
       description: 'Ask anything about a concept or get a question explained.',
       icon: BrainCircuit,
       href: '/tutor',
-      accent: 'border-l-indigo-600',
+      tile: 'from-fuchsia-100 to-pink-50 text-fuchsia-700',
     },
     {
       title: 'My Analytics',
       description: 'See your score trends and find your weak spots.',
       icon: BarChart3,
       href: '/analytics',
-      accent: 'border-l-green-600',
+      tile: 'from-emerald-100 to-green-50 text-emerald-700',
     },
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Top Nav */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-xl font-bold text-blue-700">SAT</span>
-            <span className="text-xl font-bold text-gray-900">itude</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600 hidden sm:block">
-              {user?.primaryEmailAddress?.emailAddress}
-            </span>
-            <button
-              onClick={() => signOut({ redirectUrl: '/' })}
-              className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors"
-            >
-              <LogOut size={16} />
-              <span className="hidden sm:inline">Sign out</span>
-            </button>
-          </div>
-        </div>
-      </header>
+    <AppShell>
+      {/* Greeting */}
+      <div className="mb-8">
+        <span className="section-kicker mb-3 block font-mono">Dashboard</span>
+        <h1 className="text-3xl font-extrabold tracking-[-0.04em] text-teal-950 sm:text-4xl">
+          Welcome back, {firstName}
+        </h1>
+        <p className="mt-2 text-teal-800/75">
+          Ready to practice? Let's get your score moving.
+        </p>
+      </div>
 
-      <main className="max-w-7xl mx-auto px-6 py-10">
-        {/* Welcome */}
-        <div className="mb-10">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Welcome back, {firstName} 👋
-          </h1>
-          <p className="mt-2 text-gray-500">
-            Ready to practice? Let's get your score moving.
-          </p>
-        </div>
-
-        {/* Stats Row */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-          {stats.map(({ label, value, icon: Icon, color }) => (
-            <div
-              key={label}
-              className="bg-white rounded-2xl border border-gray-200 p-5 flex items-start gap-4"
-            >
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${color}`}>
-                <Icon size={20} />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">{value}</p>
-                <p className="text-xs text-gray-500 mt-0.5">{label}</p>
-              </div>
+      {/* Stats row */}
+      <motion.div
+        className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+        variants={staggerContainer}
+        initial="hidden"
+        animate="show"
+      >
+        {stats.map((stat) => (
+          <motion.div
+            key={stat.label}
+            variants={fadeUp}
+            className="glass-card group flex items-center gap-4 p-5 transition-transform duration-200 hover:-translate-y-1"
+          >
+            <div className={`glass-icon h-12 w-12 shrink-0 bg-gradient-to-br ${stat.tile}`}>
+              <stat.icon size={20} />
             </div>
-          ))}
-        </div>
+            <div>
+              <div className="font-mono text-2xl font-extrabold tracking-[-.04em] text-teal-700">{stat.value}</div>
+              <div className="text-xs font-medium text-teal-700/60">{stat.label}</div>
+            </div>
+          </motion.div>
+        ))}
+      </motion.div>
 
-        {/* Quick Actions */}
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">
-          What would you like to do?
-        </h2>
-        <div className="grid md:grid-cols-2 gap-4 mb-10">
-          {quickActions.map(({ title, description, icon: Icon, href, accent }) => (
+      {/* Quick actions */}
+      <h2 className="section-kicker mb-3 mt-12 block font-mono">Quick actions</h2>
+      <motion.div
+        className="grid gap-4 md:grid-cols-2"
+        variants={staggerContainer}
+        initial="hidden"
+        animate="show"
+      >
+        {quickActions.map((action) => (
+          <motion.div key={action.title} variants={fadeUp}>
             <Link
-              key={title}
-              to={href}
-              className={`bg-white rounded-2xl border border-gray-200 border-l-4 ${accent} p-6 flex items-center gap-5 hover:shadow-md hover:border-gray-300 transition-all duration-200 group`}
+              to={action.href}
+              className="glass-card group flex items-center gap-5 p-6 transition-all duration-200 hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
             >
-              <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center text-gray-700 shrink-0 group-hover:bg-blue-50 group-hover:text-blue-700 transition-colors">
-                <Icon size={22} />
+              <div className={`glass-icon h-14 w-14 shrink-0 bg-gradient-to-br ${action.tile}`}>
+                <action.icon size={24} />
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-gray-900">{title}</h3>
-                <p className="text-sm text-gray-500 mt-0.5">{description}</p>
+                <h3 className="font-bold text-teal-950">{action.title}</h3>
+                <p className="mt-0.5 text-sm leading-6 text-teal-700/60">{action.description}</p>
               </div>
-              <ChevronRight size={18} className="text-gray-400 group-hover:text-blue-600 transition-colors shrink-0" />
+              <ChevronRight size={18} className="shrink-0 text-teal-600/50 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-teal-900" />
             </Link>
-          ))}
-        </div>
+          </motion.div>
+        ))}
+      </motion.div>
 
-        {/* Getting Started Banner */}
-        <div className="bg-blue-700 rounded-2xl p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-          <div>
-            <p className="text-blue-200 text-sm font-semibold uppercase tracking-widest mb-2">
-              Get Started
-            </p>
-            <h3 className="text-2xl font-bold text-white">
-              Take your first practice test
-            </h3>
-            <p className="text-blue-200 mt-2 text-sm max-w-md">
-              Your diagnostic test sets your baseline score and creates a personalised study plan.
-            </p>
-          </div>
-          <Link
-            to="/practice/test"
-            className="shrink-0 inline-flex items-center gap-2 bg-white text-blue-700 px-6 py-3 rounded-full font-semibold text-sm hover:bg-blue-50 transition-colors"
-          >
-            Start test
-            <ChevronRight size={16} />
-          </Link>
+      {/* Getting started banner */}
+      <motion.div
+        className="mt-12 flex flex-col items-start justify-between gap-6 rounded-[36px] border border-white/70 bg-gradient-to-br from-teal-700 via-teal-600 to-cyan-600 p-8 text-white shadow-[18px_18px_48px_rgba(13,148,136,.24),-18px_-18px_48px_rgba(255,255,255,0.18)] sm:flex-row sm:items-center"
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+      >
+        <div>
+          <span className="mb-2 block font-mono text-xs font-bold uppercase tracking-[0.2em] text-teal-100">
+            Get started
+          </span>
+          <h3 className="text-2xl font-extrabold tracking-[-0.03em]">
+            Take your first practice test
+          </h3>
+          <p className="mt-2 max-w-md text-sm leading-6 text-teal-100">
+            Your diagnostic test sets your baseline score and creates a personalised study plan.
+          </p>
         </div>
-      </main>
-    </div>
+        <Link to="/practice/test" className="shrink-0">
+          <Button variant="secondary" size="lg" className="group min-w-[180px]">
+            Start test
+            <ChevronRight size={16} className="transition-transform group-hover:translate-x-1" />
+          </Button>
+        </Link>
+      </motion.div>
+    </AppShell>
   )
 }

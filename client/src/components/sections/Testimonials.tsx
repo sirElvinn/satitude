@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion'
+import { Star } from 'lucide-react'
 import { TESTIMONIALS } from '../../lib/constants'
+import { fadeUp, staggerContainer, viewportOnce } from '../../lib/motion'
 
 export const Testimonials = () => {
   return (
@@ -7,48 +9,54 @@ export const Testimonials = () => {
       <div className="mx-auto max-w-7xl">
         <motion.div
           className="mx-auto mb-12 max-w-2xl text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="show"
+          viewport={viewportOnce}
         >
-          <span className="mb-4 block text-xs font-bold uppercase tracking-[0.3em] text-sky-700">
-            Testimonials
-          </span>
-          <h2 className="mb-4 text-3xl font-extrabold text-slate-900 sm:text-4xl">
+          <span className="section-kicker mb-4 block font-mono">Testimonials</span>
+          <h2 className="mb-4 text-3xl font-extrabold text-teal-950 sm:text-4xl">
             Real students, real score gains
           </h2>
-          <p className="text-lg leading-8 text-slate-600">
+          <p className="text-lg leading-8 text-teal-800/75">
             Hear from students who improved their SAT scores with SATitude.
           </p>
         </motion.div>
 
-        <div className="grid gap-6 md:grid-cols-3">
-          {TESTIMONIALS.map((testimonial, i) => (
+        <motion.div
+          className="grid gap-6 md:grid-cols-3"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="show"
+          viewport={viewportOnce}
+        >
+          {TESTIMONIALS.map((testimonial) => (
             <motion.div
               key={testimonial.name}
-              className="clay-card p-8"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
+              variants={fadeUp}
+              className="glass-card p-8"
             >
-              <p className="mb-6 text-base leading-8 text-slate-600">“{testimonial.text}”</p>
+              <div className="mb-4 flex" aria-label="5 out of 5 stars">
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <Star key={s} size={15} className="fill-amber-400 text-amber-400" />
+                ))}
+              </div>
+              <p className="mb-6 text-base leading-8 text-teal-800/75">“{testimonial.text}”</p>
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-sky-100 to-cyan-50 text-sm font-bold text-sky-700 shadow-sm">
+                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-teal-100 to-cyan-50 text-sm font-bold text-teal-700 shadow-sm">
                   {testimonial.name
                     .split(' ')
                     .map((name) => name[0])
                     .join('')}
                 </div>
                 <div>
-                  <div className="text-sm font-semibold text-slate-900">{testimonial.name}</div>
-                  <div className="text-sm font-medium text-sky-700">{testimonial.score}</div>
+                  <div className="text-sm font-semibold text-teal-950">{testimonial.name}</div>
+                  <div className="font-mono text-sm font-medium text-teal-700">{testimonial.score}</div>
                 </div>
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )

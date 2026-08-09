@@ -1,98 +1,60 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { Button } from '../components/ui/Button'
+import { Footer } from '../components/layout/Footer'
+import { fadeUp, staggerContainer } from '../lib/motion'
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex flex-col">
-      {/* Main Content */}
-      <div className="flex-1 flex items-center justify-between px-8 md:px-16 py-16">
-        {/* Left Section */}
+    <div className="landing-background flex min-h-screen flex-col text-teal-900 antialiased">
+      <motion.div
+        className="flex flex-1 flex-col items-center justify-center gap-8 px-8 py-16 md:flex-row md:px-16"
+        variants={staggerContainer}
+        initial="hidden"
+        animate="show"
+      >
         <div className="max-w-xl">
-          {/* Badge */}
-          <div className="inline-block px-4 py-2 bg-blue-100 rounded-full mb-8">
-            <span className="text-blue-700 font-semibold text-sm tracking-wider">
-              ERROR • 404
+          <motion.div variants={fadeUp}>
+            <span className="glass-pill mb-8 px-4 py-2 font-mono text-sm font-bold uppercase tracking-[0.2em] text-teal-700">
+              Error · 404
             </span>
-          </div>
+          </motion.div>
 
-          {/* Heading */}
-          <h1 className="text-6xl md:text-7xl font-bold text-slate-900 mb-8 leading-tight">
+          <motion.h1 variants={fadeUp} className="mb-8 text-5xl font-extrabold leading-tight tracking-[-0.04em] text-teal-950 md:text-6xl">
             Looks Like Your
             <br />
-            <span className="text-blue-700">Navigator Took an L</span>
-          </h1>
+            <span className="text-teal-700">Navigator Took an L</span>
+          </motion.h1>
 
-          {/* Description */}
-          <p className="text-slate-600 text-lg mb-8 leading-relaxed">
-            It looks like this page couldn't score high enough to stay in our
-            index! Don't worry, even the sharpest minds lose their way. Let's
-            get you back on track for a perfect score.
-          </p>
+          <motion.p variants={fadeUp} className="mb-8 text-lg leading-relaxed text-teal-800/75">
+            It looks like this page couldn't score high enough to stay in our index! Don't worry, even the sharpest minds lose their way. Let's get you back on track for a perfect score.
+          </motion.p>
 
-          {/* Buttons */}
-          <div className="flex gap-4 flex-wrap">
-            <Link
-              to="/"
-              className="inline-block bg-slate-900 hover:bg-slate-800 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
-            >
-              Back to home →
+          <motion.div variants={fadeUp} className="flex flex-wrap gap-4">
+            <Link to="/" className="inline-block">
+              <Button variant="primary" size="lg">Back to home →</Button>
             </Link>
-            <Link
-              to="/"
-              className="inline-block border-2 border-slate-900 text-slate-900 hover:bg-slate-50 px-8 py-3 rounded-lg font-semibold transition-colors"
-            >
-              Try a practice test
+            <Link to="/" className="inline-block">
+              <Button variant="outline" size="lg">Try a practice test</Button>
             </Link>
-          </div>
+          </motion.div>
         </div>
 
-        {/* Right Section - Illustration */}
-        <div className="flex flex-1 justify-center items-center mt-8 md:mt-0">
-          <div className="relative w-[750px] h-[750px] bg-transparent">
-            {/* Mascot illustration */}
+        <motion.div
+          variants={fadeUp}
+          className="flex flex-1 items-center justify-center"
+        >
+          <div className="relative w-[420px] h-[420px] md:w-[560px] md:h-[560px]">
             <img
               src="/models/404-mascot-updated.png"
               alt="404 Mascot"
-              className="w-full h-full object-contain border-none outline-none shadow-none"
+              className="float-soft h-full w-full object-contain"
             />
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
-      {/* Footer */}
-      <footer className="border-t border-slate-200 bg-white py-8 px-8">
-        <div className="flex justify-center items-center gap-8">
-          <span className="text-slate-400 text-sm">Follow us on:</span>
-          <div className="flex gap-6">
-            <a
-              href="#"
-              className="text-slate-400 hover:text-slate-600 transition-colors text-sm font-medium"
-            >
-              Facebook
-            </a>
-            <a
-              href="#"
-              className="text-slate-400 hover:text-slate-600 transition-colors text-sm font-medium"
-            >
-              Instagram
-            </a>
-            <a
-              href="#"
-              className="text-slate-400 hover:text-slate-600 transition-colors text-sm font-medium"
-            >
-              Twitter
-            </a>
-            <a
-              href="#"
-              className="text-slate-400 hover:text-slate-600 transition-colors text-sm font-medium"
-            >
-              YouTube
-            </a>
-          </div>
-        </div>
-        <div className="text-center text-slate-400 text-sm mt-6">
-          © 2026 SATitude. All rights reserved.
-        </div>
-      </footer>
+      <Footer />
     </div>
-  );
+  )
 }

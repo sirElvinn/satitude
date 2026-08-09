@@ -1,13 +1,13 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
+const app = express();
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import userRoutes from './routes/user.routes';
 import webhookRoutes from './routes/webhook.routes';
 
-const app = express();
 const PORT = process.env.PORT || 3001;
 
 // ─── Security Middleware ─────────────────────────────────────────────────────

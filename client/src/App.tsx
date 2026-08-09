@@ -6,6 +6,10 @@ import SignInPage from './pages/auth/SignIn'
 import SignUpPage from './pages/auth/SignUp'
 import Dashboard from './pages/Dashboard'
 import { ProtectedRoute } from './components/ProtectedRoute'
+import PracticeTest from './pages/practice/PracticeTest'
+import QuestionBank from './pages/practice/QuestionBank'
+import Tutor from './pages/tutor/Tutor'
+import Analytics from './pages/analytics/Analytics'
 
 function App() {
   const { isSignedIn } = useAuth()
@@ -40,6 +44,38 @@ function App() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/practice/test"
+          element={
+            <ProtectedRoute>
+              <PracticeTest />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/practice/questions"
+          element={
+            <ProtectedRoute>
+              <QuestionBank />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tutor"
+          element={
+            <ProtectedRoute>
+              <Tutor />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/analytics"
+          element={
+            <ProtectedRoute>
+              <Analytics />
             </ProtectedRoute>
           }
         />

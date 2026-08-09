@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react'
+import { useReducedMotion } from 'framer-motion'
 
 const SHUFFLE_INTERVAL = 30
 const RESET_DELAY = 75
@@ -15,6 +16,7 @@ interface HackerTextProps {
 export const HackerText = ({ text, className, as: Tag = 'span' }: HackerTextProps) => {
   const charRefs = useRef<(HTMLSpanElement | null)[]>([])
   const timerIds = useRef<number[]>([])
+  const prefersReducedMotion = useReducedMotion()
 
   const clearTimers = () => {
     timerIds.current.forEach((id) => {
@@ -25,6 +27,7 @@ export const HackerText = ({ text, className, as: Tag = 'span' }: HackerTextProp
   }
 
   const shuffle = useCallback(() => {
+    if (prefersReducedMotion) return
     clearTimers()
 
     charRefs.current.forEach((el, index) => {
@@ -46,7 +49,7 @@ export const HackerText = ({ text, className, as: Tag = 'span' }: HackerTextProp
       }, index * SHUFFLE_INTERVAL)
       timerIds.current.push(startTimeout)
     })
-  }, [text])
+  }, [text, prefersReducedMotion])
 
   useEffect(() => clearTimers, [])
 
